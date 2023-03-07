@@ -1,4 +1,6 @@
+import 'package:bloc_gym_project/bloc/workout_cubit.dart';
 import 'package:bloc_gym_project/screen/home_page_screen.dart';
+import 'package:bloc_gym_project/states/workout_states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -26,7 +28,7 @@ class WorkoutTime extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<WorkoutsCubit>(
+    return /*BlocProvider<WorkoutsCubit>(
       create: (BuildContext context) {
         WorkoutsCubit workoutsCubit = WorkoutsCubit();
         if(workoutsCubit.state.isEmpty){
@@ -42,7 +44,39 @@ class WorkoutTime extends StatelessWidget {
           return const HomePageScreen();
         }
       )
-    );
+    );*/
+      MultiBlocProvider(
+          providers: [
+            BlocProvider<WorkoutsCubit>(
+                create: (BuildContext context) {
+                  WorkoutsCubit workoutsCubit = WorkoutsCubit();
+                  if(workoutsCubit.state.isEmpty){
+                    print("...loading json since the state is empty");
+                    workoutsCubit.getWorkout();
+                  }else{
+                    print("...the state is not empty...");
+                  }
+                  return workoutsCubit;
+                }),
+            BlocProvider<WorkoutCubit>(
+                create: (BuildContext context) => WorkoutCubit()
+            ),
+          ],
+          child: BlocBuilder<WorkoutCubit, WorkoutState>(
+            builder: (context, state) {
+              print("...point1...");
+              if(state is WorkoutInitial){
+                print("...point2...");
+                return const HomePageScreen();
+              }else if(state is WorkoutEditing){
+                print("...point3..."); // TODO 2:11:40
+                return Container();
+              }
+              print("...point4...");
+              return Container();
+            },
+          )
+      );
   }
 }
 

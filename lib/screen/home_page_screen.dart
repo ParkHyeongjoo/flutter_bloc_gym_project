@@ -1,3 +1,4 @@
+import 'package:bloc_gym_project/bloc/workout_cubit.dart';
 import 'package:bloc_gym_project/bloc/workouts_cubit.dart';
 import 'package:bloc_gym_project/helper/helpers.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +40,8 @@ class _ScreenBody extends StatelessWidget {
                         horizontal: 0, vertical: VisualDensity.maximumDensity
                       ),
                       leading: IconButton(
-                        onPressed: (){}, icon: const Icon(Icons.edit)
+                        onPressed: BlocProvider.of<WorkoutCubit>(context).editWorkout(workout, workouts.indexOf(workout)),
+                          icon: const Icon(Icons.edit)
                       ),
                       title: Text(workout.title.toString()),
                       trailing: Text(formatTime(workout.getTotal(), true)),
