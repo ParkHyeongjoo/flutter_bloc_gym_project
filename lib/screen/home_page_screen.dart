@@ -40,7 +40,9 @@ class _ScreenBody extends StatelessWidget {
                         horizontal: 0, vertical: VisualDensity.maximumDensity
                       ),
                       leading: IconButton(
-                        onPressed: BlocProvider.of<WorkoutCubit>(context).editWorkout(workout, workouts.indexOf(workout)),
+                        onPressed: (){
+                          BlocProvider.of<WorkoutCubit>(context).editWorkout(workout, workouts.indexOf(workout));
+                        },
                           icon: const Icon(Icons.edit)
                       ),
                       title: Text(workout.title.toString()),
@@ -51,7 +53,7 @@ class _ScreenBody extends StatelessWidget {
                       itemCount: workout.exercises.length,
                       itemBuilder: (BuildContext context, int index) =>
                         ListTile(
-                          onTap: (){},
+                          onTap: () => BlocProvider.of<WorkoutCubit>(context).editExercise(index),
                           visualDensity: const VisualDensity(
                             horizontal: 0, vertical: VisualDensity.maximumDensity
                           ),
